@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "required": ["floor_plan"],
+  "properties": {
+    "floor_plan": {
+      "type": "object",
+      "required": ["total_areas", "areas"],
+      "properties": {
+        "total_areas": {
+          "type": "number"
+        },
+        "areas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["area_id", "area_name", "grid", "spaces"],
+            "properties": {
+              "area_id": { "type": "number" },
+              "area_name": { "type": "string" },
+              "area_note": { "type": "string" },
+
+              "grid": {
+                "type": "object",
+                "required": ["rows", "columns"],
+                "properties": {
+                  "rows": { "type": "number" },
+                  "columns": { "type": "number" }
+                }
+              },
+
+              "spaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["id", "row", "col_start", "col_span"],
+                  "properties": {
+                    "id": { "type": "string" },
+                    "row": { "type": "number" },
+                    "col_start": { "type": "number" },
+                    "col_span": { "type": "number" },
+                    "unit_count": { "type": "number" },
+                    "note": { "type": "string" }
+                  }
+                }
+              },
+
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["start", "end"],
+                  "properties": {
+                    "start": { "type": "number" },
+                    "end": { "type": "number" },
+                    "note": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

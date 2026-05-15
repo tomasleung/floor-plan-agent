@@ -1,0 +1,20 @@
+{
+  "floor_plan": {
+    "total_areas": "{{total_areas}}",
+    "areas": [
+      {
+        "area_id": "{{area_id}}",
+        "area_name": "{{area_name}}",
+        "area_note": "{{area_note}}",
+
+        "grid": {
+          "rows": "{{rows}}",
+          "columns": "{{columns}}"
+        },
+
+        "spaces": [],
+        "groups": []
+      }
+    ]
+  }
+}
