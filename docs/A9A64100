@@ -1,0 +1,25 @@
+﻿#,Category,Layer,Purpose,Description / How It Is Used in OSRS
+1,Business Layer,Business Intent,Why (Business Alignment),"Defines the real-world problem and desired outcome (e.g., standardizing floor plans for Power Apps). Ensures all design decisions align with operational and business value."
+2,Business Layer,Business Outcome,Success Measurement,"Defines the measurable operational outcome expected from the agent (e.g., reduce manual redesign effort, standardize layouts, improve onboarding speed). Prevents building AI systems without business value validation."
+3,Business Layer,Decision Context,Decision Alignment,"Defines who uses the output, what operational decision it supports, and what action will be taken. Aligns OSRS with Decision-First architecture principles."
+4,Agent Definition,Role,Identity,"Defines what the agent is (e.g., Deterministic Floor Plan Extraction Agent). Prevents the model from drifting into unrelated behaviors."
+5,Agent Definition,Operating Mode,Behavioral Control,"Defines the operational behavior style of the agent (e.g., deterministic, governance-first, literal interpretation, low creativity). Stabilizes behavior across models and workflows."
+6,Agent Definition,Intent,Mission,Defines what the agent must accomplish (Extract → Normalize → Structure → Validate → Output). Guides overall behavior.
+7,Agent Definition,Constraints,Safety / Governance,"Defines what the agent must not do (no hallucination, no reordering, no inference). Ensures deterministic and reliable output."
+8,Execution / Reasoning,State Machine,Flow Control,Defines execution flow (Extraction → Validation → Final Output). Prevents skipping steps and enforces human-in-loop process.
+9,Execution / Reasoning,Phases,Structured Reasoning,Breaks down the task into deterministic steps (area → grid → spaces → groups → normalization → contract). Enables consistent reasoning.
+10,Execution / Reasoning,Forcing Questions,Cognitive Control,"Forces the agent to self-check before output (e.g., “Are all areas accounted for?”). Helps catch errors early."
+11,Execution / Reasoning,Premise Challenge,Anti-Hallucination,"Requires the agent to validate its own assumptions (e.g., group vs merged space). Prevents incorrect interpretations."
+12,Execution / Reasoning,Alternatives Generation,Divergent Reasoning,"Encourages evaluating multiple interpretations (e.g., group vs repeated notes) before selecting the correct one. Improves accuracy."
+13,Control Layer,Approval Gate,Human-in-the-loop,Stops execution after extraction and requires user confirmation before producing final contract. Prevents propagation of errors.
+14,Control Layer,Confidence & Escalation Rules,Uncertainty Governance,"Defines how uncertainty is handled (e.g., ambiguity, incomplete structure, conflicting interpretations). Prevents false confidence and unsafe assumptions."
+15,Control Layer,Memory,Context Persistence,Retains user-confirmed structure and corrections across steps. Prevents rework and repeated questioning.
+16,Control Layer,Tool Routing,Capability Orchestration,"Defines how external tools may be used (e.g., schema validation, renderer, Power Apps integration). Enables system expansion."
+17,Data & Output Layer,Templates,Output Formatting,Defines how outputs are generated (human-readable Markdown + machine JSON). Templates guide AI behavior but do not enforce structure.
+18,Data & Output Layer,Contract Alignment,Data Contract Enforcement,Ensures all outputs strictly conform to schema.json. This is the system-level guarantee for interoperability between agents.
+19,Data & Output Layer,UI Rendering Standards,UI / Visual Governance,"Defines deterministic rendering rules (canvas size, typography, colors, spacing, alignment, Power Apps compatibility). Ensures consistent operational visual outputs across all rendered layouts."
+20,Governance Layer,Auditability,Explainability / Traceability,"Ensures extraction and reasoning decisions are explainable, reviewable, and traceable for governance and operational support."
+21,Governance Layer,Error Handling,Failure Governance,"Defines deterministic failure behavior and structured error responses when input validation, extraction, or contract generation fails. Prevents undefined system states."
+22,Governance Layer,Security & Privacy,Governance / Compliance,"Ensures safe handling of data (no unnecessary storage, compliance with standards like M365 when applicable)."
+23,Governance Layer,Integration,System Connectivity,"Defines how the agent connects to external systems (e.g., Copilot, Power Apps, APIs). Keeps core logic decoupled from platform."
+24,Governance Layer,Metadata,Framework Governance,"Defines framework version, agent type, owner, revision tracking, and operating specification references. Enables long-term maintainability and governance of OSRS agents."
