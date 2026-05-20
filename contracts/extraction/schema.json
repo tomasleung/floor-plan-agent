@@ -1,64 +1,200 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+
   "type": "object",
+  "description": "Root object representing a full floor plan including area layout and space-level geometry.",
+
   "required": ["floor_plan"],
+
   "properties": {
     "floor_plan": {
       "type": "object",
-      "required": ["total_areas", "areas"],
+      "description": "Container for the entire layout, including area-level layout and detailed area definitions.",
+
+      "required": ["total_areas", "area_layout", "areas"],
+
       "properties": {
+
         "total_areas": {
-          "type": "number"
+          "type": "number",
+          "description": "Total number of areas in the floor plan. Must match the number of objects in the areas array."
         },
+
+        "area_layout": {
+          "type": "object",
+          "description": "Defines the spatial arrangement of areas within the floor plan using a row-based layout.",
+
+          "required": ["rows"],
+
+          "properties": {
+            "rows": {
+              "type": "array",
+              "description": "List of rows describing how areas are visually arranged in the floor plan.",
+
+              "items": {
+                "type": "object",
+                "required": ["row_index", "areas"],
+
+                "properties": {
+                  "row_index": {
+                    "type": "number",
+                    "description": "1-based index indicating the vertical position of the row."
+                  },
+
+                  "areas": {
+                    "type": "array",
+                    "description": "Ordered list of area_ids that appear in this row from left to right.",
+
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
         "areas": {
           "type": "array",
+          "description": "List of all areas in the floor plan. Each area defines its own layout and space structure.",
+
           "items": {
             "type": "object",
-            "required": ["area_id", "area_name", "grid", "spaces"],
-            "properties": {
-              "area_id": { "type": "number" },
-              "area_name": { "type": "string" },
-              "area_note": { "type": "string" },
 
-              "grid": {
+            "required": ["area_id", "area_name", "layout", "spaces"],
+
+            "properties": {
+
+              "area_id": {
+                "type": "string",
+                "description": "Unique identifier of the area. Must be referenced by area_layout."
+              },
+
+              "area_name": {
+                "type": "string",
+                "description": "Display name of the area."
+              },
+
+              "area_note": {
+                "type": "string",
+                "description": "Optional descriptive note for the area (e.g., 'ISO', 'Public View')."
+              },
+
+              "layout": {
                 "type": "object",
-                "required": ["rows", "columns"],
+                "description": "Defines the internal layout of spaces within the area using a row-based structure.",
+
+                "required": ["rows"],
+
                 "properties": {
-                  "rows": { "type": "number" },
-                  "columns": { "type": "number" }
+                  "rows": {
+                    "type": "array",
+                    "description": "List of rows defining how spaces are arranged within the area.",
+
+                    "items": {
+                      "type": "object",
+
+                      "required": ["row_index", "spaces"],
+
+                      "properties": {
+
+                        "row_index": {
+                          "type": "number",
+                          "description": "1-based index of the row within the area."
+                        },
+
+                        "spaces": {
+                          "type": "array",
+                          "description": "Ordered list of space IDs that appear in this row from left to right.",
+
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               },
 
               "spaces": {
                 "type": "array",
+                "description": "Defines all individual and merged spaces within the area, including their position and size.",
+
                 "items": {
                   "type": "object",
+
                   "required": ["id", "row", "col_start", "col_span"],
+
                   "properties": {
-                    "id": { "type": "string" },
-                    "row": { "type": "number" },
-                    "col_start": { "type": "number" },
-                    "col_span": { "type": "number" },
-                    "unit_count": { "type": "number" },
-                    "note": { "type": "string" }
+
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier for the space (e.g., '1', '9-10')."
+                    },
+
+                    "row": {
+                      "type": "number",
+                      "description": "Row index where the space is located within the area layout."
+                    },
+
+                    "col_start": {
+                      "type": "number",
+                      "description": "Starting column position (1-based index) of the space within its row."
+                    },
+
+                    "col_span": {
+                      "type": "number",
+                      "description": "Number of columns the space spans horizontally. Used to represent merged or wide spaces."
+                    },
+
+                    "unit_count": {
+                      "type": "number",
+                      "description": "Optional. Number of logical units represented by this space. Example: '9-10' has unit_count = 2."
+                    },
+
+                    "note": {
+                      "type": "string",
+                      "description": "Optional descriptive label for the space."
+                    }
                   }
                 }
               },
 
               "groups": {
                 "type": "array",
+                "description": "Optional grouping of consecutive spaces representing logical categories or shared attributes.",
+
                 "items": {
                   "type": "object",
+
                   "required": ["start", "end"],
+
                   "properties": {
-                    "start": { "type": "number" },
-                    "end": { "type": "number" },
-                    "note": { "type": "string" }
+
+                    "start": {
+                      "type": "number",
+                      "description": "Starting space number in the group range."
+                    },
+
+                    "end": {
+                      "type": "number",
+                      "description": "Ending space number in the group range."
+                    },
+
+                    "note": {
+                      "type": "string",
+                      "description": "Optional descriptive label for the group."
+                    }
                   }
                 }
               }
+
             }
           }
         }
+
       }
     }
   }

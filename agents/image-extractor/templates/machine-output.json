@@ -1,19 +1,23 @@
 {
   "floor_plan": {
     "total_areas": "{{total_areas}}",
+
+    "area_layout": {
+      "rows": "{{area_layout_rows}}"
+    },
+
     "areas": [
       {
         "area_id": "{{area_id}}",
         "area_name": "{{area_name}}",
         "area_note": "{{area_note}}",
 
-        "grid": {
-          "rows": "{{rows}}",
-          "columns": "{{columns}}"
+        "layout": {
+          "rows": "{{layout_rows}}"
         },
 
-        "spaces": [],
-        "groups": []
+        "spaces": "{{spaces}}",
+        "groups": "{{groups}}"
       }
     ]
   }
