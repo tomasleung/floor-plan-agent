@@ -1,0 +1,74 @@
+{
+  "rows": [
+    {
+      "row_index": 1,
+      "height_percent": 48,
+      "alignment": "left",
+
+      "areas": [
+        {
+          "area_id": "A1",
+          "x_percent": 0,
+          "width_percent": 40,
+          "grid": { "rows": 3, "cols": 4 },
+          "note": "ISO"
+        },
+        {
+          "area_id": "A2",
+          "x_percent": 44,
+          "width_percent": 40,
+          "grid": { "rows": 3, "cols": 4 },
+          "note": "ISO | Hot airflow issue"
+        }
+      ],
+
+      "gaps": [
+        { "width_percent": 4 }
+      ],
+
+      "empty": [
+        { "width_percent": 16 }
+      ]
+    },
+
+    {
+      "row_index": 2,
+      "height_percent": 52,
+      "alignment": "center",
+
+      "areas": [
+        {
+          "area_id": "A3",
+          "x_percent": 5,
+          "width_percent": 30,
+          "grid": { "rows": 2, "cols": 4 },
+          "note": "Temporary Area"
+        },
+        {
+          "area_id": "A4",
+          "x_percent": 39,
+          "width_percent": 30,
+          "grid": { "rows": 2, "cols": 4 },
+          "note": ""
+        },
+        {
+          "area_id": "A5",
+          "x_percent": 73,
+          "width_percent": 27,
+          "grid": { "rows": 2, "cols": 2 },
+          "note": "ISO"
+        }
+      ],
+
+      "gaps": [
+        { "width_percent": 4 },
+        { "width_percent": 4 }
+      ],
+
+      "empty": [
+        { "width_percent": 5 },
+        { "width_percent": 10 }
+      ]
+    }
+  }
+}

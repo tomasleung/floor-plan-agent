@@ -1,7 +1,9 @@
 # FLOOR PLAN EXTRACTION
 
-> Human-readable validation view.
-> Visual layout shows structure. Details ensure schema-level accuracy.
+> Human Validation View  
+> - Visual layout = structure  
+> - Notes = semantic meaning (correct scope)  
+> - Groups = logical relationships  
 
 ---
 
@@ -14,7 +16,6 @@
 ## Area Layout (Visual)
 
 <!-- Derived from floor_plan.area_layout.rows -->
-<!-- Shows spatial arrangement of areas -->
 
 {{area_layout_visual}}
 
@@ -31,35 +32,36 @@ Note:
 {{area_note}}
 {{/if}}
 
-{{#if area_issue}}
-⚠ Issue:
-{{area_issue}}
-{{/if}}
-
 ---
 
-#### Layout (Visual)
+#### Layout
 
+<!-- Structure only (NO notes inside layout) -->
 <!-- Derived from area.layout.rows -->
-<!-- Visual representation of spatial structure -->
 
 {{layout_visual}}
 
 ---
 
-#### Space Details
-
-<!-- Maps directly to schema fields:
-     row, col_start, col_span, unit_count, note -->
-
-{{space_details}}
-
----
+{{#if groups}}
 
 #### Groups
 
-<!-- Logical grouping of spaces (not spatial rendering) -->
+<!-- Logical grouping (explicit annotations only) -->
 
 {{groups_readable}}
 
+{{/if}}
+
+{{#if space_notes}}
+
+#### Notes (Space-Level)
+
+<!-- Notes that apply only to specific spaces -->
+
+{{space_notes}}
+
+{{/if}}
+
 ---
+``

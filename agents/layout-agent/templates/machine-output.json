@@ -1,0 +1,59 @@
+{
+  "canvas": {
+    "width": "{{canvas.width}}",
+    "height": "{{canvas.height}}"
+  },
+
+  "global": {
+    "row_gap": "{{global.row_gap}}",
+    "col_gap": "{{global.col_gap}}"
+  },
+
+  "rows": [
+    {
+      "row_index": "{{row_index}}",
+      "height_percent": "{{height_percent}}",
+      "alignment": "{{alignment}}",
+
+      "areas": [
+        {
+          "area_id": "{{area_id}}",
+          "x_percent": "{{x_percent}}",
+          "width_percent": "{{width_percent}}",
+
+          "grid": {
+            "rows": "{{grid.rows}}",
+            "cols": "{{grid.cols}}"
+          },
+
+          "note": "{{area_note}}"
+        }
+      ],
+
+      "empty": [
+        {
+          "width_percent": "{{empty.width_percent}}"
+        }
+      ]
+    }
+  ],
+
+  "validation": {
+    "status": "{{validation.status}}",
+
+    "rows": [
+      {
+        "row_index": "{{row_index}}",
+
+        "areas": [
+          {
+            "area_id": "{{area_id}}",
+            "space_width": "{{space_width}}",
+            "space_height": "{{space_height}}",
+            "status": "{{status}}"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -17,6 +17,7 @@
         },
 
         "spaces": "{{spaces}}",
+
         "groups": "{{groups}}"
       }
     ]

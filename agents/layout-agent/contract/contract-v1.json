@@ -1,0 +1,18 @@
+{
+  "agent": "layout-solver",
+  "version": "v1",
+
+  "input": {
+    "type": "floor_plan_structure",
+    "source": "image-extractor"
+  },
+
+  "output": {
+    "type": "layout_solution",
+    "artifacts": [
+      "human-output.md",
+      "machine-output.json",
+      "validation"
+    ]
+  }
+}
