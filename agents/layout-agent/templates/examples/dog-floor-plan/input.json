@@ -1,0 +1,49 @@
+{
+  "floor_plan": {
+    "total_areas": 1,
+    "area_layout": {
+      "rows": [
+        { "row_index": 1, "areas": ["A1"] }
+      ]
+    },
+    "areas": [
+      {
+        "area_id": "A1",
+        "area_name": "Dog Kennels",
+        "area_note": "All ISO",
+
+        "layout": {
+          "rows": [
+            {
+              "row_index": 1,
+              "spaces": ["1","2","3","4","5","6","7","8","9","10","11"]
+            }
+          ]
+        },
+
+        "spaces": [
+          { "id": "1", "row": 1, "col_start": 1, "col_span": 1 },
+          { "id": "2", "row": 1, "col_start": 2, "col_span": 1 },
+          { "id": "3", "row": 1, "col_start": 3, "col_span": 1 },
+          { "id": "4", "row": 1, "col_start": 4, "col_span": 1 },
+
+          { "id": "5", "row": 1, "col_start": 5, "col_span": 1 },
+          { "id": "6", "row": 1, "col_start": 6, "col_span": 1 },
+          { "id": "7", "row": 1, "col_start": 7, "col_span": 1 },
+          { "id": "8", "row": 1, "col_start": 8, "col_span": 1 },
+          { "id": "9", "row": 1, "col_start": 9, "col_span": 1 },
+          { "id": "10", "row": 1, "col_start": 10, "col_span": 1 },
+          { "id": "11", "row": 1, "col_start": 11, "col_span": 1 }
+        ],
+
+        "groups": [
+          {
+            "start": 1,
+            "end": 4,
+            "note": "Large / Public View"
+          }
+        ]
+      }
+    ]
+  }
+}

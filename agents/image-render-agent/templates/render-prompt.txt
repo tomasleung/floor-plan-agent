@@ -1,0 +1,136 @@
+Render a flat 2D diagram using STRICT rules.
+
+=====================================
+INPUT STRUCTURE (DO NOT MODIFY)
+=====================================
+
+Grid:
+- Rows: {{rows}}
+- Columns: {{cols}}
+
+Spaces (MUST match exactly and in order):
+{{space_ids}}
+
+CRITICAL:
+- DO NOT change number of rows
+- DO NOT change number of columns
+- DO NOT reorder spaces
+- DO NOT duplicate spaces
+- DO NOT skip spaces
+
+If any rule cannot be followed, STOP.
+
+=====================================
+AREA HEADER
+=====================================
+
+Text:
+{{area_name}} ({{area_note}})
+
+Position:
+- top center
+- outside the grid
+
+Style:
+- font-family: {{font_family}}
+- font-size: {{area_header_font_size}}
+- font-weight: bold
+- color: {{text_color}}
+
+=====================================
+SPACE GRID
+=====================================
+
+Layout:
+- Render EXACTLY {{cols}} equal-width vertical columns
+- Render EXACTLY {{rows}} row(s)
+- Columns must be evenly spaced
+- No wrapping or splitting allowed
+
+Each Space:
+- Background color: {{space_bg_color}}
+- Border: {{border_width}}px {{border_style}} {{border_color}}
+- Full height of row
+
+Text Rules:
+- Display space ID ONLY (no extra text)
+- Position: top center
+- Font-size: {{space_id_font_size}}
+- Font-weight: bold
+- Color: {{text_color}}
+
+=====================================
+GROUP (SPAN CONNECTION)
+=====================================
+
+Group Definition:
+- Start Space: {{group_start}}
+- End Space: {{group_end}}
+
+Rendering Rules:
+
+- Draw a horizontal line connecting EXACTLY from the left boundary of Start Space
+  to the right boundary of End Space
+
+- Add vertical tick marks at both ends of the line
+
+- Line must align exactly with grid column edges
+
+Label:
+{{group_range}} ({{group_note}})
+
+Position:
+- centered above the span line
+- outside the grid
+
+Style:
+- font-size: {{group_font_size}}
+- font-weight: bold
+- color: {{text_color}}
+
+STRICT RULES:
+- DO NOT draw a box
+- DO NOT create a new row
+- DO NOT extend beyond defined spaces
+
+=====================================
+STYLE RULES
+=====================================
+
+- Area background: {{area_bg_color}}
+- Space background: {{space_bg_color}}
+- Text color: {{text_color}}
+- Border color: {{border_color}}
+
+- No shadows
+- No gradients
+- No rounded UI elements
+- No 3D effects
+- Flat diagram only
+
+=====================================
+PROHIBITED ACTIONS
+=====================================
+
+The renderer MUST NOT:
+
+- Create additional rows
+- Create nested layouts
+- Duplicate or omit spaces
+- Invent structure
+- Modify layout
+- Merge or split spaces
+- Add decorative elements
+
+=====================================
+OUTPUT REQUIREMENT
+=====================================
+
+Generate a clean, structured diagram image that strictly follows:
+
+- layout geometry ✅
+- space order ✅
+- group span alignment ✅
+- style rules ✅
+
+Any deviation is invalid.

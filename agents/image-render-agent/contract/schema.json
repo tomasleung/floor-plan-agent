@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "required": ["canvas", "global", "rows", "validation"],
+  "properties": {
+
+    "canvas": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
+      }
+    },
+
+    "global": {
+      "type": "object",
+      "properties": {
+        "row_gap": { "type": "number" },
+        "col_gap": { "type": "number" }
+      }
+    },
+
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+
+          "row_index": { "type": "integer" },
+          "height_percent": { "type": "number" },
+
+          "alignment": { "type": "string" },
+
+          "areas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+
+                "area_id": { "type": "string" },
+                "width_percent": { "type": "number" },
+                "x_percent": { "type": "number" },
+
+                "note": { "type": "string" },
+
+                "grid": {
+                  "type": "object",
+                  "properties": {
+                    "rows": { "type": "integer" },
+                    "cols": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+
+          "empty": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "width_percent": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "validation": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "row_index": { "type": "integer" },
+              "areas": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "area_id": { "type": "string" },
+                    "space_width": { "type": "number" },
+                    "space_height": { "type": "number" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
