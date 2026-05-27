@@ -1,15 +1,10 @@
 {
-  "version": "v1.0-final",
+  "version": "v1.1",
 
   "canvas": {
     "width": 1106,
     "height": 688,
-    "padding": 16,
     "background_color": "#FFFFFF"
-  },
-
-  "row": {
-    "gap": 12
   },
 
   "typography": {
@@ -36,6 +31,9 @@
 
   "group": {
     "position": "layer_between_title_and_grid",
+
+    "reserved": true,
+    "height": 16,
 
     "span": {
       "mode": "space_index",
@@ -67,8 +65,7 @@
 
     "group_layer": {
       "height": 16,
-      "margin_bottom": 6,
-      "collapse_if_empty": false
+      "margin_bottom": 6
     },
 
     "grid": {
@@ -91,5 +88,17 @@
     "fixed_space_order": true,
     "no_space_duplication": true,
     "no_new_layout_elements": true
-  }
+  },
+
+  "group_layer": {
+    "height": 16,
+    "margin_bottom": 6,
+    "collapse_if_empty": true
+} ,
+
+"row": {
+  "gap": 12
+}
+
+
 }

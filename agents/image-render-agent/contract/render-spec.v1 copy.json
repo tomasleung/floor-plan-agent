@@ -2,6 +2,8 @@
   "version": "v1.0-min",
 
   "canvas": {
+    "width": 1106,
+    "height": 688,
     "background_color": "#FFFFFF"
   },
 

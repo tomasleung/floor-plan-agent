@@ -1,15 +1,10 @@
 {
-  "version": "v1.0-final",
+  "version": "v1.0",
 
   "canvas": {
     "width": 1106,
     "height": 688,
-    "padding": 16,
     "background_color": "#FFFFFF"
-  },
-
-  "row": {
-    "gap": 12
   },
 
   "typography": {
@@ -25,17 +20,18 @@
   },
 
   "space_id": {
-    "position": "top_left",
+    "position": "top_center",
     "font_size": 14,
-    "font_weight": "bold",
-    "padding": {
-      "x": 6,
-      "y": 16
-    }
+    "font_weight": "bold"
+  },
+
+  "space_note": {
+    "position": "center",
+    "font_size": 12
   },
 
   "group": {
-    "position": "layer_between_title_and_grid",
+    "position": "outside_top",
 
     "span": {
       "mode": "space_index",
@@ -59,23 +55,6 @@
     }
   },
 
-  "layout_stack": {
-    "area_title": {
-      "height": 32,
-      "margin_bottom": 6
-    },
-
-    "group_layer": {
-      "height": 16,
-      "margin_bottom": 6,
-      "collapse_if_empty": false
-    },
-
-    "grid": {
-      "margin_top": 0
-    }
-  },
-
   "border": {
     "color": "#000000",
     "width": 2,
@@ -87,7 +66,28 @@
     "space": "#f2ab2c"
   },
 
+  "layout_spacing": {
+    "area": {
+      "top_padding": 40,
+      "bottom_padding": 10
+    },
+
+    "title": {
+      "margin_bottom": 8
+    },
+
+    "group": {
+      "margin_top": 4,
+      "margin_bottom": 6
+    },
+
+    "grid": {
+      "top_padding": 0
+    }
+  },
+
   "layout_constraints": {
+    "single_row_only": true,
     "fixed_space_order": true,
     "no_space_duplication": true,
     "no_new_layout_elements": true
