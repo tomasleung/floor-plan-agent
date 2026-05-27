@@ -1,0 +1,69 @@
+<svg width="1000" height="360" viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg">
+
+<style>
+.label { font-size: 12px; font-family: Arial, sans-serif; fill: #000; }
+.title { font-size: 14px; font-weight: bold; font-family: Arial, sans-serif; }
+.box { stroke: #000; stroke-width: 1; rx: 6; ry: 6; }
+.arrow { stroke: #000; stroke-width: 2; fill: none; }
+.dashed { stroke-dasharray: 4; }
+</style>
+
+<!-- TITLE -->
+<text class="title" x="500" y="30" text-anchor="middle">Floor Plan Agent System Architecture</text>
+
+<!-- CONTRACT LAYER -->
+<rect class="box dashed" x="150" y="60" width="700" height="40" fill="#F5F5F5"/>
+<text class="label" x="500" y="85" text-anchor="middle">Contract / Schema Layer (Global Data Structure)</text>
+
+<!-- IMAGE -->
+<rect class="box" x="40" y="180" width="120" height="60" fill="#E3F2FD"/>
+<text class="label" x="100" y="215" text-anchor="middle">Image</text>
+
+<!-- EXTRACTOR -->
+<rect class="box" x="200" y="170" width="160" height="80" fill="#BBDEFB"/>
+<text class="label" x="280" y="200" text-anchor="middle">Extractor</text>
+<text class="label" x="280" y="220" text-anchor="middle">(WHAT)</text>
+<text class="label" x="280" y="240" text-anchor="middle">(LLM Controlled)</text>
+
+<!-- LAYOUT -->
+<rect class="box" x="420" y="170" width="160" height="80" fill="#90CAF9"/>
+<text class="label" x="500" y="200" text-anchor="middle">Layout</text>
+<text class="label" x="500" y="220" text-anchor="middle">(WHERE)</text>
+<text class="label" x="500" y="240" text-anchor="middle">(LLM Controlled)</text>
+
+<!-- RENDER -->
+<rect class="box" x="640" y="170" width="180" height="80" fill="#64B5F6"/>
+<text class="label" x="730" y="200" text-anchor="middle">Renderer</text>
+<text class="label" x="730" y="220" text-anchor="middle">(HOW)</text>
+<text class="label" x="730" y="240" text-anchor="middle">(Deterministic)</text>
+
+<!-- SVG -->
+<rect class="box" x="860" y="180" width="100" height="60" fill="#42A5F5"/>
+<text class="label" x="910" y="215" text-anchor="middle">SVG</text>
+
+<!-- HUMAN REVIEW (Extractor) -->
+<rect class="box" x="200" y="280" width="160" height="40" fill="#FFF3E0"/>
+<text class="label" x="280" y="305" text-anchor="middle">Human Review</text>
+
+<!-- HUMAN REVIEW (Layout) -->
+<rect class="box" x="420" y="280" width="160" height="40" fill="#FFF3E0"/>
+<text class="label" x="500" y="305" text-anchor="middle">Human Review</text>
+
+<!-- ARROWS MAIN FLOW -->
+<line class="arrow" x1="160" y1="210" x2="200" y2="210"/>
+<polygon points="195,205 200,210 195,215" fill="#000"/>
+
+<line class="arrow" x1="360" y1="210" x2="420" y2="210"/>
+<polygon points="415,205 420,210 415,215" fill="#000"/>
+
+<line class="arrow" x1="580" y1="210" x2="640" y2="210"/>
+<polygon points="635,205 640,210 635,215" fill="#000"/>
+
+<line class="arrow" x1="820" y1="210" x2="860" y2="210"/>
+<polygon points="855,205 860,210 855,215" fill="#000"/>
+
+<!-- HUMAN CONNECTION -->
+<line class="arrow dashed" x1="280" y1="250" x2="280" y2="280"/>
+<line class="arrow dashed" x1="500" y1="250" x2="500" y2="280"/>
+
+</svg>

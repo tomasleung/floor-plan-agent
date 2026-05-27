@@ -1,288 +1,235 @@
-# Extraction Contract
-
-This folder defines the **data contract produced by the image-extractor agent**.
+# Floor Plan Agent System
 
 ---
 
-## Purpose
+## Overview
 
-This folder is the **single source of truth** for the extraction data model.
+This project builds a **deterministic AI agent pipeline** that converts floor plan inputs into:
 
-It defines:
-
-- The exact structure of extracted data
-- Required fields and relationships
-- The contract that all agents must follow
+✅ Structured data  
+✅ Deterministic layout  
+✅ SVG visual output (UI-ready)
 
 ---
 
-## Principles
+## BUSINESS → Problem
 
-- Deterministic structure
-- No visual ambiguity
-- Fully machine-readable
-- Backward compatible
-- ✅ Contract-driven (not agent-driven)
+Manual floor plan design creates several challenges:
+
+- ❌ Inconsistent layouts across locations  
+- ❌ Not suitable for UI systems (e.g., Power Apps)  
+- ❌ Time-consuming manual recreation  
+- ❌ No standardized structure or grid  
+
+This makes it difficult to build scalable, reliable UI applications.
 
 ---
 
-## Ownership Model (IMPORTANT)
+## TECH → Solution
+
+This project introduces a **contract-driven, multi-agent system**:
 
 ```
-contracts/ = defines WHAT the data must look like
-agents/    = defines HOW the data is produced
-templates/ = helps format the output
+Unstructured Input → Structured Data → Deterministic Layout → SVG Output
 ```
 
-### Key Rule
+Core design principles:
 
-> ✅ The contract is the source of truth  
-> ❌ Agents must not redefine the contract  
+- ✅ Contract-driven (schema-based data)
+- ✅ Deterministic rendering (same input → same output)
+- ✅ Separation of concerns
+- ✅ Human-in-the-loop validation
+- ✅ LLM used as controlled reasoning engine
 
 ---
 
-## Why This Folder Exists
+## AGENTS → Execution Model
 
-Even though agents include output templates:
+The system is implemented using **3 specialized agents**:
+
+| Stage | Agent | Responsibility |
+|------|------|----------------|
+| WHAT | Image Extractor | Extract structured data from images |
+| WHERE | Layout Agent | Define layout geometry (grid, rows, areas) |
+| HOW | Render Agent | Generate final SVG output |
+
+---
+
+## System Architecture
 
 ```
-agents/image-extractor/templates/machine-output.json
+Image (Input)
+   ↓
+Image Extractor (WHAT)
+   ↓
+Layout Agent (WHERE)
+   ↓
+Render Agent (HOW)
+   ↓
+SVG Output (UI-ready)
 ```
 
-Those templates are:
-
-- Prompt guidance only
-- Flexible / human-oriented
-- NOT enforced
-
 ---
 
-### This folder provides:
+## Why LLM + Agent System?
 
-✅ Schema validation  
-✅ Version control  
-✅ Cross-agent consistency  
-✅ Future extensibility  
+Floor plans are:
 
----
+- Semi-structured (image-based)
+- Require interpretation
+- Require layout/UX decisions
 
-## Used By
+LLM is used **in a controlled way**:
 
-- Image Extractor Agent (producer)
-- Layout Renderer Agent (consumer)
-- Power Apps UI layer
-- Future analytics / BI models
+✅ LLM handles:
+- reasoning
+- layout decisions (spacing, alignment)
 
----
+❌ LLM does NOT:
+- define data structure
+- control output format
 
-## Key Objects
-
-### FLOOR_PLAN
-Top level container
-
-### AREA
-Logical container (room / section)
-
-### SPACE
-Smallest unit (kennel / portal)
-
-### GROUP
-Logical grouping of spaces
-
----
-
-## Versioning
-
-Contracts must be versioned:
-
-- contract-v1.json
-- contract-v2.json
-
-This allows evolving the system without breaking downstream agents.
-
----
-
-## Validation
-
-All outputs must conform to:
+Instead:
 
 ```
-schema.json
+Contracts → define structure
+Agents → enforce logic
+LLM → operates within constraints
 ```
 
 This ensures:
 
-- Required fields exist
-- Data types are correct
-- Structure is consistent
+- ✅ Predictable output  
+- ✅ Consistent structure  
+- ✅ Human control  
 
 ---
 
-## ✅ What Are `schema.json` and `contract-v1.json`?
-
-This system uses both **schema** and **contract examples** to ensure consistency and scalability.
-
----
-
-### ✅ `schema.json` — Structure Definition (The Rules)
-
-`schema.json` defines the **formal structure of the data contract**.
-
-It specifies:
-
-- Required fields (e.g., `area_id`, `grid`, `spaces`)
-- Data types (string, number, array)
-- Relationships between objects (Area → Spaces → Groups)
-
----
-
-#### ✅ Purpose
+## Repository Structure
 
 ```
-schema.json = WHAT the data must look like
+floor-plan-agent/
+├── agents/                  # Core processing logic
+│   ├── image-extractor/     # WHAT (data extraction)
+│   ├── layout-agent/        # WHERE (layout generation)
+│   └── image-render-agent/  # HOW (SVG rendering)
+├── docs/                    # Business + technical documentation
+├── governance/              # Framework + execution principles
+├── deployment/              # Deployment setup (future)
 ```
 
 ---
 
-#### ✅ Why We Need It
+## Folder Responsibilities
 
-Without a schema:
-
-- ❌ Agents may output inconsistent structures  
-- ❌ Missing fields may break downstream agents  
-- ❌ No validation mechanism exists  
-
-With a schema:
-
-- ✅ Output can be validated automatically  
-- ✅ All agents follow the same structure  
-- ✅ System becomes deterministic and reliable  
+| Folder | Purpose |
+|------|--------|
+| agents | Core agent logic (pipeline execution) |
+| docs | BRD, TRD, contracts, and design documentation |
+| governance | Framework and operating model |
+| deployment | Deployment and integration setup |
 
 ---
 
-#### ✅ Example Role
+## Key Files
 
-```
-Extractor Agent → produces JSON
-Validator → checks JSON against schema.json
-Renderer Agent → safely consumes validated JSON
-```
-
----
-
----
-
-### ✅ `contract-v1.json` — Example Contract (The Reference)
-
-`contract-v1.json` is a **fully populated example** of a valid contract.
-
-It represents a **real instance** of the schema.
-
----
-
-#### ✅ Purpose
-
-```
-contract-v1.json = WHAT valid data looks like in practice
-```
-
----
-
-#### ✅ Why We Need It
-
-Schema alone defines rules, but not usage.
-
-`contract-v1.json` helps:
-
-- ✅ Developers understand expected structure quickly  
-- ✅ AI prompts stay aligned with real examples  
-- ✅ Testing and debugging become easier  
-- ✅ Future agents can reuse known-good data  
-
----
-
-#### ✅ Think of It Like BI
-
-| Component | Role |
+| Component | File |
 |----------|------|
-| schema.json | Data model (semantic layer) |
-| contract-v1.json | Sample dataset |
-| agent template | Data generation logic |
+| Image Extractor | `agents/image-extractor/agent.md` |
+| Layout Agent | `agents/layout-agent/agent.md` |
+| Render Agent | `agents/image-render-agent/agent.md` |
+| Render Spec | `agents/image-render-agent/contract/render-spec.v1.json` |
 
 ---
 
----
+## How It Works
 
-### ✅ Relationship Between Them
-
+### Step 1 — Extract
 ```
-schema.json        → defines rules
-contract-v1.json   → shows valid example
-agent templates    → generate outputs following schema
+Image → Structured JSON (contract-compliant)
 ```
 
 ---
 
-### ✅ System Flow
-
+### Step 2 — Layout
 ```
-Image
-   ↓
-Extractor Agent (uses template)
-   ↓
-Generated JSON
-   ↓
-Validated by schema.json ✅
-   ↓
-Matches contract-v1 structure ✅
-   ↓
-Consumed by Renderer Agent
+JSON → Deterministic grid layout
 ```
 
 ---
 
----
-
-### ✅ Why Both Are Required
-
-| File | Role | Required? |
-|------|-----|----------|
-| schema.json | Enforcement | ✅ YES |
-| contract-v1.json | Reference | ✅ YES |
-| template (agent) | Generation | ✅ YES |
-
----
-
-### ✅ Key Rule
-
+### Step 3 — Render
 ```
-schema.json defines the contract
-contract-v1.json demonstrates the contract
-agents must comply with the contract
+Layout → SVG diagram
 ```
 
 ---
 
-## Relationship to Agents
+## Output
 
-```
-Image → Extraction Agent → Contract → Renderer Agent → Final Output
-```
+The final output is:
 
-This means:
-
-- Agents produce contract-compliant data
-- Renderer consumes contract-compliant data
-- No direct coupling between agents
+✅ SVG diagram  
+✅ UI-ready (Power Apps compatible)  
+✅ Deterministic layout  
+✅ Consistent across all locations  
 
 ---
 
-## Future Extension
+## SVG Adjustment Model
 
-This contract may expand to include:
+The system is designed for:
 
-- UI layout metadata
-- Power Apps coordinates
-- Interaction definitions
+```
+Agent → ~98% correct
+User → ~2% manual refinement
+```
 
-Without breaking existing versions
+Example adjustment:
+
+```xml
+<text y="30"> → y="34"
+```
+
+---
+
+## Data Contract
+
+This system uses a **contract-driven architecture** to ensure consistency across agents.
+
+Learn more:
+
+```
+agents/image-extractor/contract/README.md
+```
+
+---
+
+## Documentation
+
+Detailed documentation is available in:
+
+```
+/docs
+```
+
+Includes:
+
+- Business Requirement (BRD)
+- Technical Design (TRD)
+- Data Contract Design
+- Operating Model
+
+---
+
+## Summary
+
+This project provides:
+
+- ✅ Standardized floor plan generation  
+- ✅ Deterministic rendering system  
+- ✅ Contract-based architecture  
+- ✅ Scalable multi-agent pipeline  
+- ✅ UI-ready outputs for applications like Power Apps  
+
+---

@@ -1,250 +1,440 @@
-# 🧠 Agent Platform Design — Technical Specification
+# 🧠 Agent Platform Design — Technical Specification (TRD)
 
 ---
 
-# 1. Purpose
+## 1. Purpose
 
-This document defines the core technical design principles of the AI Floor Plan System.
+This document defines the **technical architecture and design principles** of the Floor Plan Agent System.
 
 It explains:
-- Agent framework structure
-- Contract-driven design
-- LLM integration model
-- Workflow orchestration
-- System constraints and governance
+
+- Agent framework structure  
+- Contract-driven data model  
+- LLM integration model  
+- Workflow orchestration  
+- Constraint system  
+- Governance and execution model  
 
 ---
 
-# 2. System Philosophy
+## 2. System Overview
 
-The system follows a Decision-Driven, Human-in-the-Loop architecture.
+The system is a **Decision-Driven, multi-agent platform** that transforms:
 
-Human defines:
-- Workflow
-- Constraints
-- Output structure
+```
+Unstructured Input → Structured Data → Deterministic Layout → SVG Output
+```
 
-LLM performs:
-- Reasoning
-- UX design decisions
-- Optimization
+It follows a strict separation of concerns:
 
-Core principle:
-AI is guided, not autonomous.
+| Layer | Responsibility |
+|------|----------------|
+| WHAT | Extract data (Image Extractor) |
+| WHERE | Define layout (Layout Agent) |
+| HOW | Render output (Render Agent) |
 
 ---
 
-# 3. Workflow Model
+## 3. System Philosophy
 
-Pipeline:
+The system is built on a **Human-in-the-Loop, Constraint-First design**.
 
+### Role Distribution
+
+**Human defines:**
+- Workflow  
+- Constraints  
+- Output structure  
+
+**LLM performs:**
+- Reasoning  
+- Layout design decisions  
+- Optimization  
+
+---
+
+### Core Principle
+
+```
+AI is guided, not autonomous
+```
+
+---
+
+## 4. Workflow Model
+
+### Pipeline
+
+```
 Image Input  
-→ Extractor Agent  
-→ Human Review  
-→ Layout Solver Agent  
-→ Human Review  
-→ Renderer Agent  
-→ Final Output (Power Apps)
-
-Rule:
-No downstream agent executes without upstream approval.
+   ↓
+Image Extractor Agent  
+   ↓
+Human Review (Structure)  
+   ↓
+Layout Agent  
+   ↓
+Human Review (Layout)  
+   ↓
+Render Agent  
+   ↓
+Final Output (SVG / Power Apps)
+```
 
 ---
 
-# 4. Agent Framework Structure
+### Governance Rule
 
-Each agent uses a standard structure:
+```
+No downstream agent executes without upstream approval
+```
 
+---
+
+## 5. Agent Framework Structure
+
+Each agent follows a standardized structure:
+
+```
 agent/
- ├── contract-v1.json  
- ├── schema.json  
- ├── templates/  
- │    ├── human-output.md  
- │    └── machine-output.json  
- ├── examples/  
- │    └── <case>/  
- │         ├── input  
- │         ├── output-human.md  
- │         └── output-machine.json  
- └── agent.md
-
-Purpose:
-- contract: defines interface  
-- schema: enforces structure  
-- templates: standard outputs  
-- examples: test cases  
-- agent.md: logic and rules  
+├── contract-v1.json
+├── schema.json
+├── templates/
+│    ├── human-output.md
+│    └── machine-output.json
+├── examples/
+│    └── <case>/
+│         ├── input
+│         ├── output-human.md
+│         └── output-machine.json
+└── agent.md
+```
 
 ---
 
-# 5. Contract-Driven Design
+### Component Roles
 
-Agents communicate using contracts.
-
-Input contract:
-Defines expected upstream structure
-
-Output contract:
-Defines downstream deliverables
-
-Benefits:
-- Modular design  
-- Independent agents  
-- Validation support  
-- Scalable system  
+- **contract-v1.json** → defines expected data format (reference)  
+- **schema.json** → enforces structure validation (rules)  
+- **templates/** → guides agent output generation  
+- **examples/** → provides test cases and validation scenarios  
+- **agent.md** → defines logic, rules, and behavior  
 
 ---
 
-# 6. Schema Enforcement
+## 6. Contract-Driven Design
 
-All machine outputs must follow a schema.
+Agents communicate exclusively through **contracts**.
 
-This ensures:
-- Predictable structure  
-- Renderer compatibility  
-- Validation before flow continues  
+### Contract Roles
+
+- **Input Contract** → defines upstream expectations  
+- **Output Contract** → defines downstream deliverables  
 
 ---
 
-# 7. LLM Integration Model
+### Benefits
 
-LLM acts as:
-- Reasoning engine  
-- UX designer  
-- Optimization engine  
+- ✅ Decoupled agents  
+- ✅ Modular architecture  
+- ✅ Schema validation  
+- ✅ Scalable system design  
 
-LLM does NOT act as source of truth.
+---
 
-It must:
+### Key Principle
+
+```
+Contract defines structure
+Agents must comply with contract
+```
+
+---
+
+## 7. Schema Enforcement
+
+All machine outputs must conform to `schema.json`.
+
+---
+
+### Purpose
+
+Ensure:
+
+- ✅ Predictable structure  
+- ✅ Compatibility across agents  
+- ✅ Valid data before processing  
+
+---
+
+### Flow
+
+```
+Agent Output → Schema Validation → Next Agent
+```
+
+---
+
+## 8. LLM Integration Model
+
+The LLM is used as a **controlled reasoning engine**.
+
+---
+
+### LLM Responsibilities
+
 - Interpret structured input  
-- Design layout (alignment, spacing)  
-- Enforce constraints  
-- Suggest improvements  
+- Design layout decisions:
+  - spacing  
+  - alignment  
+  - density  
+- Suggest optimization  
+- Apply constraint logic  
 
 ---
 
-# 8. Constraint System
+### LLM Limitations
 
-Golden Rule:
-Each space must be ≥ 89px width and ≥ 90px height.
+LLM does NOT:
 
-Constraints:
+- Define data structures  
+- Control contract format  
+- Override constraints  
 
-Hard (must satisfy):
-- Minimum size  
+---
+
+### Control Model
+
+```
+Contracts → define structure
+Agents → enforce execution
+LLM → operates within constraints
+```
+
+---
+
+## 9. Constraint System
+
+The system uses a **constraint-first design**.
+
+---
+
+### Golden Rule
+
+```
+Each space must satisfy:
+Width ≥ 89px
+Height ≥ 90px
+```
+
+---
+
+### Constraint Types
+
+#### Hard Constraints (must satisfy)
+- Minimum dimensions  
 - Grid rules  
 - Schema compliance  
 
-Soft (UX-driven):
+---
+
+#### Soft Constraints (optimization)
 - Alignment  
 - Spacing  
 - Visual balance  
 
 ---
 
-# 9. Layout Principles
+## 10. Layout Principles
 
-Grid:
-- Equal row height  
-- Equal column width  
+### Grid Model
 
-Spacing:
-- row_gap (vertical)  
-- col_gap (horizontal)  
-
-Alignment:
-- left / center / right  
-(decided by LLM)
-
-Whitespace:
-- EMPTY areas are part of layout  
+- Equal row heights  
+- Equal column widths  
 
 ---
 
-# 10. Smart Solver
+### Spacing
 
-Purpose:
-Guarantee valid layout.
+- `row_gap` → vertical spacing  
+- `col_gap` → horizontal spacing  
 
-Behavior:
-- Valid → pass  
-- Minor issue → suggest  
-- Invalid → auto-adjust proposal  
+---
 
-Adjustment priority:
+### Alignment
+
+- left / center / right  
+- selected by LLM based on layout context  
+
+---
+
+### Whitespace
+
+- Treated as a **first-class layout element**  
+- Explicitly represented (EMPTY areas)  
+
+---
+
+## 11. Smart Layout Solver
+
+The Layout Agent acts as a **constraint-aware solver**.
+
+---
+
+### Behavior
+
+| Condition | Action |
+|----------|--------|
+| Valid layout | Pass |
+| Minor issues | Suggest improvement |
+| Invalid layout | Generate adjustment proposal |
+
+---
+
+### Adjustment Priority
+
 1. Increase area size  
 2. Reduce whitespace  
 3. Reduce spacing  
 4. Reduce density  
 
-All adjustments must be visible to user.
+---
+
+### Important Rule
+
+```
+All adjustments must be visible to the user
+```
 
 ---
 
-# 11. Human-in-the-Loop
+## 12. Human-in-the-Loop
 
-Roles:
+Human oversight is mandatory.
 
-Extractor Review:
-- Validate structure  
+---
 
-Layout Review:
+### Review Points
+
+#### Extractor Review
+- Validate extracted structure  
+
+---
+
+#### Layout Review
 - Validate usability  
-- Adjust alignment / spacing  
-
-Rule:
-Human has final authority.
+- Adjust spacing and alignment  
 
 ---
 
-# 12. Output Design
+### Authority Rule
 
-Human Output:
-- Text layout DSL  
-- Used for review and editing  
+```
+Human has final control
+```
 
-Machine Output:
-- JSON layout  
-- Used by renderer  
+---
 
-Validation Output:
+## 13. Output Design
+
+### Human Output
+
+- Text-based layout DSL  
+- Used for validation and iteration  
+
+---
+
+### Machine Output
+
+- JSON format  
+- Consumed by Render Agent  
+
+---
+
+### Validation Output
+
 - Constraint checks  
 - Pass/fail status  
 
 ---
 
-# 13. System Design Principles
+## 14. Rendering Model (Integration)
 
-1. Separation of Concerns:
-Extractor = WHAT  
-Layout = WHERE  
-Renderer = HOW  
-
-2. Deterministic Output:
-Same input → same output  
-
-3. Human-Controlled AI:
-AI suggests, human decides  
-
-4. Constraint-First Design:
-Rules before aesthetics  
-
-5. Standardization:
-Normalize layouts instead of copying images  
+The Render Agent transforms layout into **SVG output** using deterministic rules.
 
 ---
 
-# 14. Final Architecture Vision
+### Key Properties
+
+- Layer-based rendering (Title → Group → Grid)  
+- Deterministic geometry  
+- Margin-safe output  
+- Contract-consistent rendering  
+
+---
+
+## 15. System Design Principles
+
+1. **Separation of Concerns**  
+   Extractor = WHAT  
+   Layout = WHERE  
+   Renderer = HOW  
+
+2. **Deterministic Output**  
+   Same input → same output  
+
+3. **Human-Controlled AI**  
+   AI suggests → human decides  
+
+4. **Constraint-First Design**  
+   Rules before aesthetics  
+
+5. **Standardization**  
+   Normalize layouts across all centers  
+
+---
+
+## 16. Final Architecture Vision
 
 The system is a:
-- Modular agent platform  
-- UX-driven layout engine  
-- Power Apps integration system  
 
-It enables:
-- Scalable floor plan generation  
-- Consistent layout across centers  
-- Human-guided AI workflow  
-- Reliable UI overlay  
+- ✅ Modular agent platform  
+- ✅ Contract-driven data system  
+- ✅ UX-driven layout engine  
+- ✅ Power Apps integration layer  
 
 ---
+
+### Enables
+
+- Scalable floor plan generation  
+- Consistent layout across locations  
+- Reliable UI overlay positioning  
+- Human-guided AI workflows  
+
+---
+
+## ✅ Summary
+
+This system transforms:
+
+```
+Manual, inconsistent floor plans
+```
+
+into:
+
+```
+Deterministic, standardized, and UI-ready layouts
+```
+
+Using:
+
+```
+Contracts → Structure
+Agents → Execution
+LLM → Controlled reasoning
+```
+
+---
+

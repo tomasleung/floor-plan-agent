@@ -1,4 +1,4 @@
-# Contract Data Design — OSRS Extraction System
+# Data Contract Design — Floor Plan Agent System
 
 ---
 
@@ -11,6 +11,15 @@ The system is built as a **contract-driven AI pipeline**, where:
 - Data structure is strictly defined
 - AI output is controlled via templates
 - Results are validated and reviewable
+
+---
+
+## TL;DR
+
+- schema.json → defines structure  
+- contract-v1.json → example data  
+- templates → control AI output  
+- agents → execute logic  
 
 ---
 
