@@ -1,0 +1,75 @@
+<svg width="1150" height="550" viewBox="0 0 1150 550" xmlns="http://www.w3.org/2000/svg">
+<style>
+.label { font-size: 12px; font-family: Arial, sans-serif; fill: #000; }
+.title { font-size: 14px; font-weight: bold; font-family: Arial, sans-serif; fill: #000; }
+.box { stroke: #000; stroke-width: 1; }
+.arrow { stroke: #000; stroke-width: 2; fill: none; }
+.dashed { stroke-dasharray: 4; }
+</style>
+
+<text class="title" x="575" y="30" text-anchor="middle">Agent Interaction Model (Multi-Contract Design)</text>
+
+<rect class="box" x="40" y="240" width="140" height="80" rx="6" ry="6" fill="#E3F2FD"/>
+<text class="label" x="110" y="280" text-anchor="middle">Input Image</text>
+
+<rect class="box" x="220" y="220" width="180" height="100" rx="6" ry="6" fill="#BBDEFB"/>
+<text class="label" x="310" y="255" text-anchor="middle">Extractor Agent</text>
+<text class="label" x="310" y="275" text-anchor="middle">(LLM Controlled)</text>
+
+<rect class="box dashed" x="440" y="220" width="200" height="100" rx="6" ry="6" fill="#F1F8E9"/>
+<text class="label" x="540" y="255" text-anchor="middle">Extraction Contract</text>
+<text class="label" x="540" y="275" text-anchor="middle">(WHAT Data)</text>
+
+<rect class="box" x="680" y="220" width="180" height="100" rx="6" ry="6" fill="#90CAF9"/>
+<text class="label" x="770" y="255" text-anchor="middle">Layout Agent</text>
+<text class="label" x="770" y="275" text-anchor="middle">(LLM Controlled)</text>
+
+<rect class="box dashed" x="900" y="220" width="200" height="100" rx="6" ry="6" fill="#E8F5E9"/>
+<text class="label" x="1000" y="255" text-anchor="middle">Layout Contract</text>
+<text class="label" x="1000" y="275" text-anchor="middle">(WHERE Geometry)</text>
+
+<rect class="box dashed" x="300" y="400" width="160" height="100" rx="6" ry="6" fill="#FFFDE7"/>
+<text class="label" x="380" y="435" text-anchor="middle">Render Spec</text>
+<text class="label" x="380" y="455" text-anchor="middle">(Styling Rules)</text>
+
+<rect class="box" x="520" y="400" width="220" height="100" rx="6" ry="6" fill="#64B5F6"/>
+<text class="label" x="630" y="435" text-anchor="middle">Render Agent</text>
+<text class="label" x="630" y="455" text-anchor="middle">(Deterministic)</text>
+
+<rect class="box" x="800" y="400" width="180" height="100" rx="6" ry="6" fill="#42A5F5"/>
+<text class="label" x="890" y="435" text-anchor="middle">SVG Output</text>
+
+<rect class="box" x="220" y="340" width="180" height="60" rx="6" ry="6" fill="#FFF3E0"/>
+<text class="label" x="310" y="375" text-anchor="middle">Human Review</text>
+
+<rect class="box" x="680" y="340" width="180" height="60" rx="6" ry="6" fill="#FFF3E0"/>
+<text class="label" x="770" y="375" text-anchor="middle">Human Review</text>
+
+<line class="arrow" x1="180" y1="280" x2="220" y2="280"/>
+<polygon points="215,275 220,280 215,285" fill="#000"/>
+
+<line class="arrow" x1="400" y1="280" x2="440" y2="280"/>
+<polygon points="435,275 440,280 435,285" fill="#000"/>
+
+<line class="arrow" x1="640" y1="280" x2="680" y2="280"/>
+<polygon points="675,275 680,280 675,285" fill="#000"/>
+
+<line class="arrow" x1="860" y1="280" x2="900" y2="280"/>
+<polygon points="895,275 900,280 895,285" fill="#000"/>
+
+<line class="arrow" x1="540" y1="320" x2="630" y2="400"/>
+<polygon points="624,397 630,400 627,394" fill="#000"/>
+
+<line class="arrow" x1="1000" y1="320" x2="700" y2="400"/>
+<polygon points="706,395 700,400 708,402" fill="#000"/>
+
+<line class="arrow" x1="460" y1="450" x2="520" y2="450"/>
+<polygon points="515,445 520,450 515,455" fill="#000"/>
+
+<line class="arrow" x1="740" y1="450" x2="800" y2="450"/>
+<polygon points="795,445 800,450 795,455" fill="#000"/>
+
+<line class="arrow dashed" x1="310" y1="320" x2="310" y2="340"/>
+<line class="arrow dashed" x1="770" y1="320" x2="770" y2="340"/>
+
+</svg>

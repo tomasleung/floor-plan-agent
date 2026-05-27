@@ -71,6 +71,20 @@ SVG Output (UI-ready)
 
 ---
 
+## System Diagrams
+
+The system includes visual diagrams for architecture, data flow, and agent interaction:
+
+- Architecture → system structure  
+- Data Flow → data transformation  
+- Agent Interaction → contract-driven design  
+
+```
+docs/diagrams/
+```
+
+---
+
 ## Why LLM + Agent System?
 
 Floor plans are:
@@ -105,6 +119,22 @@ This ensures:
 
 ---
 
+## Contract-Driven Design (Multi-Contract Model)
+
+The system uses **separate contracts per stage**:
+
+- **Extraction Contract (WHAT)** → structured data model  
+- **Layout Contract (WHERE)** → geometry and positioning  
+- **Render Spec (HOW)** → styling and rendering rules  
+
+This separation ensures:
+
+- ✅ Clear responsibilities  
+- ✅ Scalable architecture  
+- ✅ Independent agent design  
+
+---
+
 ## Repository Structure
 
 ```
@@ -125,7 +155,7 @@ floor-plan-agent/
 | Folder | Purpose |
 |------|--------|
 | agents | Core agent logic (pipeline execution) |
-| docs | BRD, TRD, contracts, and design documentation |
+| docs | BRD, TRD, contracts, framework, and diagrams |
 | governance | Framework and operating model |
 | deployment | Deployment and integration setup |
 
@@ -139,6 +169,22 @@ floor-plan-agent/
 | Layout Agent | `agents/layout-agent/agent.md` |
 | Render Agent | `agents/image-render-agent/agent.md` |
 | Render Spec | `agents/image-render-agent/contract/render-spec.v1.json` |
+
+---
+
+## Agent Framework
+
+Agents are built using a standardized framework for:
+
+- deterministic behavior  
+- governance and constraints  
+- structured execution  
+
+See:
+
+```
+docs/agent-framework/
+```
 
 ---
 
@@ -160,7 +206,7 @@ JSON → Deterministic grid layout
 
 ### Step 3 — Render
 ```
-Layout → SVG diagram
+Layout + Data → SVG diagram
 ```
 
 ---
@@ -200,7 +246,7 @@ This system uses a **contract-driven architecture** to ensure consistency across
 Learn more:
 
 ```
-agents/image-extractor/contract/README.md
+docs/data-contract/
 ```
 
 ---
@@ -218,8 +264,25 @@ Includes:
 - Business Requirement (BRD)
 - Technical Design (TRD)
 - Data Contract Design
-- Operating Model
+- Agent Framework
+- System Diagrams
 
+---
+
+## Framework
+
+This project is built on a broader **AI execution framework** that defines:
+
+- agent orchestration
+- governance model
+- execution pipeline
+- validation and learning loop
+
+See:
+
+```
+framework/project-execution-framework.md
+```
 ---
 
 ## Summary
@@ -233,3 +296,4 @@ This project provides:
 - ✅ UI-ready outputs for applications like Power Apps  
 
 ---
+``

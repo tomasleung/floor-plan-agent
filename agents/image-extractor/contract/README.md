@@ -2,56 +2,77 @@
 
 This folder defines the **data contract produced by the Image Extractor Agent**.
 
-It is the **single source of truth** for the structure, meaning, and validation of floor plan data across the system.
+It is the **single source of truth** for the structure, meaning, and validation of extracted floor plan data.
 
 ---
 
-# PURPOSE
+## Scope
+
+This contract defines the **Extraction Contract (WHAT layer)**.
+
+The system uses multiple contracts:
+
+- **Extraction Contract (WHAT)** → defines data structure  
+- **Layout Contract (WHERE)** → defines geometry and positioning  
+- **Render Spec (HOW)** → defines rendering rules  
+
+---
+
+## TL;DR
+
+- schema.json → defines structure  
+- contract-v1.json → example valid data  
+- agents → produce contract-compliant output  
+- templates → guide output generation  
+
+---
+
+## Purpose
 
 The contract defines:
 
-- The structure of extracted floor plan data
-- Required fields and relationships
-- The interface between all agents (Extractor → Renderer → Applications)
+- the structure of extracted floor plan data  
+- required fields and relationships  
+- the interface between agents and downstream systems  
 
 ---
 
-# PRINCIPLES
+## Principles
 
 The contract follows these principles:
 
-- ✅ Deterministic structure (no ambiguity)
-- ✅ Fully machine-readable
-- ✅ Semantically consistent
-- ✅ Contract-driven (NOT agent-driven)
-- ✅ Backward compatible
+- ✅ Deterministic structure (no ambiguity)  
+- ✅ Fully machine-readable  
+- ✅ Semantically consistent  
+- ✅ Contract-driven (NOT agent-driven)  
+- ✅ Backward compatible  
 
 ---
 
-# OWNERSHIP MODEL
+## Ownership Model
 
 ```
 contracts/ = defines WHAT the data must look like  
-agents.md    = defines HOW the data is produced  
+agents/    = defines HOW the data is produced  
 templates/ = defines HOW the data is presented  
 ```
 
 ---
 
-## Key Rule
+### Key Rule
 
 ✅ The contract is the source of truth  
 ❌ Agents must NOT redefine data structure  
 
 ---
 
-# LAYOUT MODEL (CRITICAL)
+## Layout Model (CRITICAL)
 
 The system uses a **hierarchical row-based layout model** instead of a fixed grid.
 
 ---
 
-## 1. Floor Plan Level — Area Layout
+### 1. Floor Plan Level — Area Layout
 
 ```
 floor_plan.area_layout.rows
@@ -68,7 +89,7 @@ Row 2 → A3, A4, A5
 
 ---
 
-## 2. Area Level — Space Layout
+### 2. Area Level — Space Layout
 
 ```
 area.layout.rows
@@ -86,7 +107,7 @@ Row 3 → 5, 6, 7, 8
 
 ---
 
-## 3. Space Level — Geometry
+### 3. Space Level — Geometry
 
 ```
 spaces[]
@@ -98,17 +119,17 @@ Each space defines:
 - `col_start` → horizontal start  
 - `col_span` → width (merged support)  
 - `unit_count` → logical units (optional)  
-- `note` → semantic annotation (optional)
+- `note` → semantic annotation (optional)  
 
 ---
 
-# NOTE SCOPE LEVELS (IMPORTANT ⭐)
+## Note Scope Levels (IMPORTANT ⭐)
 
 Notes must be assigned to the **correct semantic level**.
 
 ---
 
-## Scope Levels
+### Scope Levels
 
 | Level | Field | Use When |
 |------|------|----------|
@@ -118,7 +139,7 @@ Notes must be assigned to the **correct semantic level**.
 
 ---
 
-## Rules (MANDATORY)
+### Rules (MANDATORY)
 
 1. ✅ Use the **most specific level possible**
 
@@ -128,21 +149,21 @@ space > group > area
 
 ---
 
-2. ❌ Do NOT assign notes to `area_note` if they apply to only one space
+2. ❌ Do NOT assign notes to `area_note` if they apply to only one space  
 
 ---
 
-3. ✅ Only use group notes when explicitly defined (e.g., “1–2 Public View”)
+3. ✅ Only use group notes when explicitly defined  
 
 ---
 
-4. ❌ Do NOT infer note scope from layout patterns
+4. ❌ Do NOT infer note scope from layout patterns  
 
 ---
 
-## Example
+### Example
 
-### ❌ Incorrect
+#### ❌ Incorrect
 
 ```json
 "area_note": "Temporary Area"
@@ -150,7 +171,7 @@ space > group > area
 
 ---
 
-### ✅ Correct
+#### ✅ Correct
 
 ```json
 {
@@ -161,7 +182,7 @@ space > group > area
 
 ---
 
-# WHY NOT GRID?
+## Why Not Grid?
 
 Traditional models use:
 
@@ -177,7 +198,7 @@ This fails for:
 
 ---
 
-## OSRS Approach
+### Row-Based Approach
 
 ```
 Grid Model ❌
@@ -186,56 +207,58 @@ Grid Model ❌
 
 ---
 
-# KEY OBJECTS
+## Key Objects
 
-## FLOOR_PLAN
+---
+
+### FLOOR_PLAN
 
 Top-level container.
 
 Contains:
 
-- `area_layout`
-- `areas[]`
+- `area_layout`  
+- `areas[]`  
 
 ---
 
-## AREA
+### AREA
 
 Logical section (room / zone).
 
 Contains:
 
-- layout
-- spaces
-- groups
-- optional area_note
+- layout  
+- spaces  
+- groups  
+- optional `area_note`  
 
 ---
 
-## SPACE
+### SPACE
 
 Smallest unit (e.g., kennel, slot).
 
 Defines:
 
-- position
-- width
-- optional note
+- position  
+- width  
+- optional note  
 
 ---
 
-## GROUP
+### GROUP
 
 Logical grouping of spaces.
 
-Example:
+Examples:
 
-- "Public View"
-- "Large Units"
+- Public View  
+- Large Units  
 
 ---
 
-# VALIDATION
+## Validation
 
 All outputs MUST conform to:
 
@@ -251,7 +274,7 @@ This ensures:
 
 ---
 
-# VERSIONING
+## Versioning
 
 Contracts must be versioned:
 
@@ -260,26 +283,44 @@ contract-v1.json
 contract-v2.json
 ```
 
-Rules:
+---
+
+### Rules
 
 - Do NOT break existing versions  
 - Introduce new version for structural changes  
 
 ---
 
-# RELATIONSHIP TO AGENTS
+## Used By
 
-```
-Image → Extractor → Contract → Renderer → UI
-```
-
-- Extractor produces contract-compliant data  
-- Renderer consumes contract data  
-- UI displays final output  
+- Image Extractor Agent (producer)  
+- Layout Agent (consumer)  
+- Render Agent (downstream consumer)  
 
 ---
 
-# RELATIONSHIP TO TEMPLATES
+## Relationship to Agents
+
+```
+Image
+  ↓
+Extractor Agent
+  ↓
+Extraction Contract
+  ↓
+Layout Agent
+  ↓
+Layout Contract
+  ↓
+Render Agent
+  ↓
+UI / SVG
+```
+
+---
+
+## Relationship to Templates
 
 Templates are for formatting only:
 
@@ -287,19 +328,19 @@ Templates are for formatting only:
 templates/
 ```
 
-- human-output.md → visual validation  
-- machine-output.json → AI generation guide  
+- `human-output.md` → visual validation  
+- `machine-output.json` → AI generation guidance  
 
 ---
 
-## Key Rule
+### Key Rule
 
 Templates MUST follow the contract  
 Templates are NOT the source of truth  
 
 ---
 
-# SUMMARY
+## Summary
 
 The contract defines a structured, scalable layout system:
 
@@ -314,13 +355,13 @@ Floor Plan
 
 ---
 
-## FINAL MODEL
+## Final Model
 
 ```
-Contract = structure ✅
-Schema = validation ✅
-Agent = execution ✅
-Template = presentation ✅
+Contract = structure ✅  
+Schema = validation ✅  
+Agent = execution ✅  
+Template = presentation ✅  
 ```
 
 ---

@@ -1,326 +1,194 @@
-# Extraction Contract
+# Render Specification (Contract)
 
-This folder defines the **data contract produced by the Image Extractor Agent**.
+This folder defines the **render specification used by the Image Render Agent**.
 
-It is the **single source of truth** for the structure, meaning, and validation of floor plan data across the system.
-
----
-
-# PURPOSE
-
-The contract defines:
-
-- The structure of extracted floor plan data
-- Required fields and relationships
-- The interface between all agents (Extractor → Renderer → Applications)
+It represents the **HOW layer**, defining how structured data is converted into visual output (SVG).
 
 ---
 
-# PRINCIPLES
+## Scope
 
-The contract follows these principles:
+This specification defines the **Render Layer (HOW)**.
 
-- ✅ Deterministic structure (no ambiguity)
-- ✅ Fully machine-readable
-- ✅ Semantically consistent
-- ✅ Contract-driven (NOT agent-driven)
-- ✅ Backward compatible
+The system includes:
+
+- Extraction Contract (WHAT) → structure  
+- Layout Contract (WHERE) → geometry  
+- Render Spec (HOW) → visual rules  
 
 ---
 
-# OWNERSHIP MODEL
+## TL;DR
+
+- schema.json → validates render data  
+- render-spec.v1.json → defines rendering rules  
+- render agent → consumes contracts + spec  
+- output → SVG  
+
+---
+
+## Purpose
+
+The render spec defines:
+
+- how shapes are drawn  
+- layout spacing and alignment  
+- text positioning and formatting  
+- styling rules (colors, borders, fonts)  
+
+---
+
+## Principles
+
+- ✅ Deterministic output  
+- ✅ No data modification  
+- ✅ Visual consistency  
+- ✅ Contract-driven execution  
+
+---
+
+## Ownership Model
 
 ```
-contracts/ = defines WHAT the data must look like  
-agents.md    = defines HOW the data is produced  
-templates/ = defines HOW the data is presented  
-```
-
----
-
-## Key Rule
-
-✅ The contract is the source of truth  
-❌ Agents must NOT redefine data structure  
-
----
-
-# LAYOUT MODEL (CRITICAL)
-
-The system uses a **hierarchical row-based layout model** instead of a fixed grid.
-
----
-
-## 1. Floor Plan Level — Area Layout
-
-```
-floor_plan.area_layout.rows
-```
-
-Defines how areas are arranged spatially.
-
-Example:
-
-```
-Row 1 → A1, A2  
-Row 2 → A3, A4, A5
+contracts/ = defines HOW output should be rendered  
+agents/    = executes rendering logic  
+templates/ = guides output generation  
 ```
 
 ---
 
-## 2. Area Level — Space Layout
+### Key Rule
 
-```
-area.layout.rows
-```
-
-Defines how spaces are arranged within each area.
-
-Example:
-
-```
-Row 1 → 1, 2, 3, 4  
-Row 2 → 9–10  
-Row 3 → 5, 6, 7, 8
-```
+✅ Render MUST NOT modify data  
+❌ Render MUST NOT infer structure  
 
 ---
 
-## 3. Space Level — Geometry
+## Render Inputs
 
-```
-spaces[]
-```
+The Render Agent consumes:
 
-Each space defines:
-
-- `row` → vertical position  
-- `col_start` → horizontal start  
-- `col_span` → width (merged support)  
-- `unit_count` → logical units (optional)  
-- `note` → semantic annotation (optional)
+- Extraction Contract  
+- Layout Contract  
+- Render Spec  
 
 ---
 
-# NOTE SCOPE LEVELS (IMPORTANT ⭐)
+## Output
 
-Notes must be assigned to the **correct semantic level**.
-
----
-
-## Scope Levels
-
-| Level | Field | Use When |
-|------|------|----------|
-| Area | `area_note` | applies to the entire area |
-| Space | `space.note` | applies to an individual space |
-| Group | `group.note` | applies to a range of spaces |
+- SVG file  
 
 ---
 
-## Rules (MANDATORY)
+## Render Model
 
-1. ✅ Use the **most specific level possible**
+The rendering process applies:
 
 ```
-space > group > area
+Data (WHAT)
++ Geometry (WHERE)
++ Rendering Rules (HOW)
+→ SVG Output
 ```
 
 ---
 
-2. ❌ Do NOT assign notes to `area_note` if they apply to only one space
+## Key Concepts
 
 ---
 
-3. ✅ Only use group notes when explicitly defined (e.g., “1–2 Public View”)
+### Geometry Mapping
+
+- space → rectangle  
+- group → visual grouping  
+- area → labeled section  
 
 ---
 
-4. ❌ Do NOT infer note scope from layout patterns
+### Styling Rules
 
----
-
-## Example
-
-### ❌ Incorrect
-
-```json
-"area_note": "Temporary Area"
-```
-
----
-
-### ✅ Correct
-
-```json
-{
-  "id": "5",
-  "note": "Temporary Area"
-}
-```
-
----
-
-# WHY NOT GRID?
-
-Traditional models use:
+Defined in:
 
 ```
-rows + columns
+render-spec.v1.json
 ```
 
-This fails for:
+Includes:
 
-- uneven layouts  
-- merged spaces  
-- real-world floor plans  
-
----
-
-## OSRS Approach
-
-```
-Grid Model ❌
-→ Row-based Layout ✅
-```
+- colors  
+- font sizes  
+- spacing rules  
+- alignment rules  
 
 ---
 
-# KEY OBJECTS
+## Validation
 
-## FLOOR_PLAN
-
-Top-level container.
-
-Contains:
-
-- `area_layout`
-- `areas[]`
-
----
-
-## AREA
-
-Logical section (room / zone).
-
-Contains:
-
-- layout
-- spaces
-- groups
-- optional area_note
-
----
-
-## SPACE
-
-Smallest unit (e.g., kennel, slot).
-
-Defines:
-
-- position
-- width
-- optional note
-
----
-
-## GROUP
-
-Logical grouping of spaces.
-
-Example:
-
-- "Public View"
-- "Large Units"
-
----
-
-# VALIDATION
-
-All outputs MUST conform to:
+Render output must align with:
 
 ```
 schema.json
 ```
 
-This ensures:
-
-- correct structure  
-- valid data types  
-- required fields present  
-
 ---
 
-# VERSIONING
-
-Contracts must be versioned:
+## Versioning
 
 ```
-contract-v1.json
-contract-v2.json
-```
-
-Rules:
-
-- Do NOT break existing versions  
-- Introduce new version for structural changes  
-
----
-
-# RELATIONSHIP TO AGENTS
-
-```
-Image → Extractor → Contract → Renderer → UI
-```
-
-- Extractor produces contract-compliant data  
-- Renderer consumes contract data  
-- UI displays final output  
-
----
-
-# RELATIONSHIP TO TEMPLATES
-
-Templates are for formatting only:
-
-```
-templates/
-```
-
-- human-output.md → visual validation  
-- machine-output.json → AI generation guide  
-
----
-
-## Key Rule
-
-Templates MUST follow the contract  
-Templates are NOT the source of truth  
-
----
-
-# SUMMARY
-
-The contract defines a structured, scalable layout system:
-
-```
-Floor Plan
-   → Area Layout (positions)
-      → Areas
-         → Layout Rows (ordering)
-            → Spaces (geometry + notes)
-            → Groups (logic)
+render-spec.v1.json
+render-spec.v2.json
 ```
 
 ---
 
-## FINAL MODEL
+### Rules
+
+- do not break existing specs  
+- version changes for visual updates  
+
+---
+
+## Used By
+
+- Render Agent (core execution)  
+- UI applications (consumer)  
+
+---
+
+## System Flow
 
 ```
-Contract = structure ✅
-Schema = validation ✅
-Agent = execution ✅
-Template = presentation ✅
+Extraction Contract
+   ↓
+Layout Contract
+   ↓
+Render Agent
+   ↓
+SVG Output
+```
+
+---
+
+## Summary
+
+The render specification defines:
+
+```
+Visual rules → shapes, layout, styling
+```
+
+---
+
+## Final Model
+
+```
+Extraction (WHAT)
+   ↓
+Layout (WHERE)
+   ↓
+Render Spec (HOW)
+   ↓
+SVG
 ```
 
 ---

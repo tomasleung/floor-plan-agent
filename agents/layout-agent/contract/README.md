@@ -1,241 +1,127 @@
-# Extraction Contract
+# Layout Contract
 
-This folder defines the **data contract produced by the Image Extractor Agent**.
+This folder defines the **data contract produced by the Layout Agent**.
 
-It is the **single source of truth** for the structure, meaning, and validation of floor plan data across the system.
+It represents the **WHERE layer**, defining the spatial structure and geometry of the floor plan.
 
 ---
 
-# PURPOSE
+## Scope
+
+This contract defines the **Layout Contract (WHERE layer)**.
+
+The system uses multiple contracts:
+
+- Extraction Contract (WHAT) → defines structure  
+- Layout Contract (WHERE) → defines geometry  
+- Render Spec (HOW) → defines visual rules  
+
+---
+
+## TL;DR
+
+- schema.json → defines layout structure  
+- contract-v1.json → valid example  
+- layout agent → generates geometry  
+- render agent → consumes layout output  
+
+---
+
+## Purpose
 
 The contract defines:
 
-- The structure of extracted floor plan data
-- Required fields and relationships
-- The interface between all agents (Extractor → Renderer → Applications)
+- spatial arrangement of areas  
+- ordering of elements  
+- row-based layout structure  
+- geometric positioning of spaces  
 
 ---
 
-# PRINCIPLES
+## Principles
 
-The contract follows these principles:
-
-- ✅ Deterministic structure (no ambiguity)
-- ✅ Fully machine-readable
-- ✅ Semantically consistent
-- ✅ Contract-driven (NOT agent-driven)
-- ✅ Backward compatible
+- ✅ Deterministic layout (same input → same output)  
+- ✅ Geometry-focused (no semantic modification)  
+- ✅ Contract-driven design  
+- ✅ Schema-validated  
 
 ---
 
-# OWNERSHIP MODEL
+## Ownership Model
 
 ```
-contracts/ = defines WHAT the data must look like  
-agents.md    = defines HOW the data is produced  
-templates/ = defines HOW the data is presented  
+contracts/ = defines WHERE structure must follow  
+agents/    = defines HOW layout is generated  
+templates/ = defines HOW output is formatted  
 ```
 
 ---
 
-## Key Rule
+### Key Rule
 
-✅ The contract is the source of truth  
-❌ Agents must NOT redefine data structure  
-
----
-
-# LAYOUT MODEL (CRITICAL)
-
-The system uses a **hierarchical row-based layout model** instead of a fixed grid.
+✅ Layout must preserve extraction meaning  
+❌ Layout must NOT modify semantic data  
 
 ---
 
-## 1. Floor Plan Level — Area Layout
+## Layout Model
+
+The layout contract defines geometry using a **row-based system**.
+
+---
+
+### Area Layout
 
 ```
 floor_plan.area_layout.rows
 ```
 
-Defines how areas are arranged spatially.
-
-Example:
-
-```
-Row 1 → A1, A2  
-Row 2 → A3, A4, A5
-```
+Defines how areas are arranged across rows.
 
 ---
 
-## 2. Area Level — Space Layout
+### Space Layout
 
 ```
 area.layout.rows
 ```
 
-Defines how spaces are arranged within each area.
-
-Example:
-
-```
-Row 1 → 1, 2, 3, 4  
-Row 2 → 9–10  
-Row 3 → 5, 6, 7, 8
-```
+Defines ordering of spaces within areas.
 
 ---
 
-## 3. Space Level — Geometry
+### Geometry Fields
 
-```
-spaces[]
-```
+Each space includes:
 
-Each space defines:
-
-- `row` → vertical position  
-- `col_start` → horizontal start  
-- `col_span` → width (merged support)  
-- `unit_count` → logical units (optional)  
-- `note` → semantic annotation (optional)
+- `row`  
+- `col_start`  
+- `col_span`  
 
 ---
 
-# NOTE SCOPE LEVELS (IMPORTANT ⭐)
-
-Notes must be assigned to the **correct semantic level**.
+## Constraints
 
 ---
 
-## Scope Levels
+### Hard Constraints (MUST)
 
-| Level | Field | Use When |
-|------|------|----------|
-| Area | `area_note` | applies to the entire area |
-| Space | `space.note` | applies to an individual space |
-| Group | `group.note` | applies to a range of spaces |
-
----
-
-## Rules (MANDATORY)
-
-1. ✅ Use the **most specific level possible**
-
-```
-space > group > area
-```
+- minimum width ≥ 89px  
+- minimum height ≥ 90px  
+- valid row/column structure  
+- schema compliance  
 
 ---
 
-2. ❌ Do NOT assign notes to `area_note` if they apply to only one space
+### Soft Constraints (Optimization)
+
+- spacing  
+- alignment  
+- visual balance  
 
 ---
 
-3. ✅ Only use group notes when explicitly defined (e.g., “1–2 Public View”)
-
----
-
-4. ❌ Do NOT infer note scope from layout patterns
-
----
-
-## Example
-
-### ❌ Incorrect
-
-```json
-"area_note": "Temporary Area"
-```
-
----
-
-### ✅ Correct
-
-```json
-{
-  "id": "5",
-  "note": "Temporary Area"
-}
-```
-
----
-
-# WHY NOT GRID?
-
-Traditional models use:
-
-```
-rows + columns
-```
-
-This fails for:
-
-- uneven layouts  
-- merged spaces  
-- real-world floor plans  
-
----
-
-## OSRS Approach
-
-```
-Grid Model ❌
-→ Row-based Layout ✅
-```
-
----
-
-# KEY OBJECTS
-
-## FLOOR_PLAN
-
-Top-level container.
-
-Contains:
-
-- `area_layout`
-- `areas[]`
-
----
-
-## AREA
-
-Logical section (room / zone).
-
-Contains:
-
-- layout
-- spaces
-- groups
-- optional area_note
-
----
-
-## SPACE
-
-Smallest unit (e.g., kennel, slot).
-
-Defines:
-
-- position
-- width
-- optional note
-
----
-
-## GROUP
-
-Logical grouping of spaces.
-
-Example:
-
-- "Public View"
-- "Large Units"
-
----
-
-# VALIDATION
+## Validation
 
 All outputs MUST conform to:
 
@@ -243,84 +129,75 @@ All outputs MUST conform to:
 schema.json
 ```
 
-This ensures:
-
-- correct structure  
-- valid data types  
-- required fields present  
-
 ---
 
-# VERSIONING
-
-Contracts must be versioned:
+## Versioning
 
 ```
 contract-v1.json
 contract-v2.json
 ```
 
-Rules:
+---
 
-- Do NOT break existing versions  
-- Introduce new version for structural changes  
+### Rules
+
+- no breaking changes  
+- introduce new versions for structural updates  
 
 ---
 
-# RELATIONSHIP TO AGENTS
+## Used By
 
-```
-Image → Extractor → Contract → Renderer → UI
-```
-
-- Extractor produces contract-compliant data  
-- Renderer consumes contract data  
-- UI displays final output  
+- Layout Agent (producer)  
+- Render Agent (consumer)  
 
 ---
 
-# RELATIONSHIP TO TEMPLATES
-
-Templates are for formatting only:
+## Relationship to Other Contracts
 
 ```
-templates/
-```
-
-- human-output.md → visual validation  
-- machine-output.json → AI generation guide  
-
----
-
-## Key Rule
-
-Templates MUST follow the contract  
-Templates are NOT the source of truth  
-
----
-
-# SUMMARY
-
-The contract defines a structured, scalable layout system:
-
-```
-Floor Plan
-   → Area Layout (positions)
-      → Areas
-         → Layout Rows (ordering)
-            → Spaces (geometry + notes)
-            → Groups (logic)
+Extraction Contract → Layout Contract → Render Spec
 ```
 
 ---
 
-## FINAL MODEL
+## System Flow
 
 ```
-Contract = structure ✅
-Schema = validation ✅
-Agent = execution ✅
-Template = presentation ✅
+Image
+   ↓
+Extractor Agent
+   ↓
+Extraction Contract
+   ↓
+Layout Agent
+   ↓
+Layout Contract
+   ↓
+Render Agent
+```
+
+---
+
+## Summary
+
+The layout contract defines:
+
+```
+Spatial structure → rows, ordering, geometry
+```
+
+---
+
+## Final Model
+
+```
+Extraction (WHAT)
+   ↓
+Layout (WHERE)
+   ↓
+Render (HOW)
 ```
 
 ---

@@ -6,21 +6,46 @@ Templates guide the AI in generating structured output, but they are **not the d
 
 ---
 
+## Scope
+
+This template set supports the **Extraction Contract (WHAT layer)**.
+
+The system includes multiple stages:
+
+- Extraction → data structure  
+- Layout → geometry and positioning  
+- Render → visual output  
+
+These templates are used ONLY at the **Extraction stage**.
+
+---
+
+## TL;DR
+
+- templates = guide AI output ✅  
+- contracts = define structure ✅  
+- schema = validates output ✅  
+- templates must follow contract ✅  
+
+---
+
 ## Purpose
 
 Templates define:
 
-- How output should be formatted
-- How information is presented
-- How the AI structures its response
+- how output should be formatted  
+- how information is presented  
+- how the AI structures its response  
 
-They help ensure **consistent and predictable responses** from the agent.
+They ensure **consistent and predictable responses** from the agent.
 
 ---
 
 ## Types of Templates
 
 This folder includes two template types:
+
+---
 
 ### 1. Human Output Template
 
@@ -34,16 +59,16 @@ Provides a **readable summary** of the extracted floor plan.
 
 #### Audience
 
-- Humans (review / validation)
-- Analysts
-- Stakeholders
+- Humans (review / validation)  
+- Analysts  
+- Stakeholders  
 
 #### Characteristics
 
-- Easy to read ✅
-- Structured but flexible ✅
-- Designed for clarity ✅
-- Not used by other agents ❌
+- Easy to read ✅  
+- Structured but flexible ✅  
+- Designed for clarity ✅  
+- Not used by other agents ❌  
 
 #### Example
 
@@ -80,25 +105,26 @@ Guides the AI to produce structured JSON output that matches the data contract.
 
 #### Audience
 
-- AI agents
-- System pipeline
+- AI agents  
+- System pipeline  
 
 #### Characteristics
 
-- Structured format ✅
-- Uses placeholders (e.g. `{{area_id}}`) ✅
-- Prompt-friendly ✅
-- Not validated directly ❌
+- Structured format ✅  
+- Uses placeholders (e.g. `{{area_id}}`) ✅  
+- Prompt-friendly ✅  
+- Validated against schema after generation ✅  
 
 ---
 
 ## IMPORTANT DISTINCTION — TEMPLATE vs CONTRACT
 
-Templates are **not the source of truth** for the system.
+Templates are **not the source of truth**.
 
 ```
-templates/   → HOW output is generated
-contracts/   → WHAT output must look like
+templates/   → HOW output is generated  
+contracts/   → WHAT output must look like  
+schema.json  → validates correctness  
 ```
 
 ---
@@ -116,17 +142,17 @@ contracts/   → WHAT output must look like
 
 ## Relationship to Contracts
 
-Templates must be aligned with:
+Templates must align with:
 
 ```
-contracts/extraction/schema.json
+contracts/schema.json
 ```
 
 This means:
 
-- All required fields must be present
-- Structure must match the contract
-- Naming must be consistent
+- all required fields must be present  
+- structure must match the contract  
+- naming must be consistent  
 
 ---
 
@@ -137,30 +163,36 @@ Image
    ↓
 Extractor Agent (uses templates)
    ↓
-Generated Output (JSON + Human View)
+Extraction Contract (structured JSON)
    ↓
-Validated against schema.json ✅
+Schema Validation ✅
    ↓
-Consumed by Renderer Agent
+Layout Agent
+   ↓
+Layout Contract
+   ↓
+Render Agent
+   ↓
+SVG Output
 ```
 
 ---
 
 ## Why Both Templates Exist
 
-| Template | Why |
-|---------|-----|
-| Human Output | Helps users understand and validate extraction |
-| Machine Output | Helps AI produce consistent structured JSON |
+| Template | Purpose |
+|---------|--------|
+| Human Output | enables human validation and understanding |
+| Machine Output | ensures consistent structured JSON generation |
 
 ---
 
 ## Important Rules
 
-- Templates must follow the contract structure
-- Templates must not introduce new fields not defined in schema
-- Templates may omit optional fields if not present
-- Human template must remain readable and concise
+- templates must follow the contract structure  
+- templates must not introduce new fields  
+- templates may omit optional fields  
+- human template must remain readable and concise  
 
 ---
 
@@ -168,22 +200,26 @@ Consumed by Renderer Agent
 
 Templates may be extended to support:
 
-- Debug output
-- Visualization hints
-- Intermediate validation views
+- debug output  
+- validation diagnostics  
+- intermediate transformation views  
 
-Without affecting the core contract
+without affecting the core contract  
 
 ---
 
 ## Summary
 
 ```
-Templates = OUTPUT FORMAT GUIDE
-Contracts = OUTPUT STRUCTURE RULES
+Templates = OUTPUT FORMAT GUIDE  
+Contracts = OUTPUT STRUCTURE RULES  
+Schema = VALIDATION LAYER  
 ```
+
+---
 
 Both are required:
 
-- Templates guide AI output ✅
-- Contracts guarantee system consistency ✅
+- Templates guide AI output ✅  
+- Contracts guarantee system consistency ✅  
+``
