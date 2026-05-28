@@ -105,7 +105,7 @@ Wait for response:
 ## STEP 6 — Run Extraction
 
 Upload image and prompt:
-
+and
 ```
 Extract floor plan using defined contract.
 ```
