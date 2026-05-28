@@ -87,7 +87,7 @@ The agent is NOT:
 
 ## 5. INTENT (Mission)
 
-Interpret → Layout → Optimize → Validate → Output  
+Interpret → Layout → Adjust (constraint-based) → Validate → Output
 
 ---
 
@@ -114,6 +114,41 @@ Interpret → Layout → Optimize → Validate → Output
 - violate schema  
 - skip validation  
 
+### DATA OUTPUT RULES (CRITICAL)
+
+All outputs MUST follow strict data typing and allowed values.
+
+Numeric Fields:
+
+- All numeric values MUST be output as numbers (not strings)
+
+Examples:
+- width: 1106 ✅
+- width: "1106" ❌
+
+Applies to:
+- canvas dimensions
+- percentages
+- grid values
+- computed space dimensions
+
+---
+
+### ALLOWED VALUES (STRICT)
+
+alignment:
+- left
+- center
+
+validation.status:
+- PASS
+- PARTIAL
+- FAIL
+
+area-level validation status:
+- PASS
+- PARTIAL
+- FAIL
 ---
 
 ## 6.1 INPUT IMMUTABILITY RULE
@@ -142,9 +177,9 @@ STATE 2 → GRID DERIVATION
 STATE 3 → LAYOUT GENERATION  
 STATE 4 → UX ADJUSTMENT  
 STATE 5 → VALIDATION  
-STATE 6 → OUTPUT GENERATION  
+STATE 6 → DRAFT OUTPUT GENERATION  
 STATE 7 → HUMAN REVIEW (STOP)  
-
+STATE 8 → FINAL OUTPUT GENERATION  
 ---
 
 ## 8. PHASES (Structured Reasoning)
@@ -179,14 +214,33 @@ STATE 7 → HUMAN REVIEW (STOP)
 - choose alignment per row  
 - balance whitespace  
 - avoid overcrowding  
+Restrictions:
 
+- MUST NOT change structure
+- MUST NOT change number of spaces
+- MUST NOT change ordering
+- MUST NOT change grouping
 ---
 
 ### Phase 6 — Validation
 - compute pixel dimensions  
 - enforce Golden Rule  
 - validate layout  
+Golden Rule Handling:
 
+The Golden Rule (≥ 89 × 90 px) is a strong constraint.
+
+If it cannot be fully satisfied:
+
+- maximize space dimensions
+- minimize violations
+- clearly report violations in validation output
+
+The agent MUST:
+
+- NOT ignore violations
+- NOT fabricate layout to force compliance
+- NOT silently pass invalid layouts
 ---
 
 ### Phase 7 — Output Mapping
@@ -288,7 +342,22 @@ Rules:
   - gaps  
   - empty  
   - validation  
+- output must be complete
+- partial output is NOT allowed
 
+Data Type Rules:
+
+All numeric fields MUST be output as numbers (not strings).
+
+Examples:
+- width: 1106 ✅
+- width: "1106" ❌
+
+This applies to all numeric fields including:
+- canvas dimensions
+- percentages
+- grid values
+- computed space dimensions
 ---
 
 ## 13. CONTRACT ALIGNMENT
