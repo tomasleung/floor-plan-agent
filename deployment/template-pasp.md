@@ -1,14 +1,21 @@
-# Layout Solver Agent — Portable Agent Specification Package (PASP)
+## Agent PASP Template
 
-This document defines a complete, portable Layout Solver Agent.
+This document defines a reusable template for building agents.
 
-It contains:
-- Agent behavior definition
-- Execution logic
-- Data contract
-- Output templates
-- Reference examples
-- Initialization instructions
+All agents MUST include:
+1. Agent Definition
+2. Contract
+3. Schema
+4. Templates
+5. Examples
+6. Initialization Prompt
+
+---
+### Template Rules
+
+- Do NOT hardcode agent-specific logic
+- This file is reusable across agents
+- Must be cloned when creating new agent PASPs
 
 ---
 

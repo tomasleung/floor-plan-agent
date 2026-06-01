@@ -37,3 +37,15 @@ Agents → execute logic
 System is inactive until all agent PASPs are loaded.
 
 WAIT for PASP files before execution.
+
+### 1.2 Agent Load Order
+
+Load in this exact sequence:
+1. Extractor PASP
+2. Layout PASP
+3. Renderer PASP
+4. (Optional) SVG Assistant PASP
+
+If any agent is missing:
+→ STOP execution
+→ Do NOT proceed
